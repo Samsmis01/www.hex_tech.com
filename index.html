@@ -223,60 +223,79 @@
     <header>
         𝑯𝑬𝑿𝑻𝑬𝑪𝑯
     </header>
-    
-    <div class="form-container">
+     <div class="form-container">
         <h2>𝗜𝗡𝗦𝗖𝗥𝗜𝗣𝗧𝗜𝗢𝗡𝗦</h2>
         <form id="signup-form">
             <input type="text" id="username" placeholder="Nom d'utilisateur" required>
             <input type="email" id="email" placeholder="Adresse e-mail" required>
             <input type="tel" id="phone" placeholder="Numéro de téléphone" required>
-            <div style="margin-top: 24px;">
-                <button type="button" id="signup-btn" class="btn">S'inscrire</button>
-            </div>
+            <button type="button" id="signup-btn">S'inscrire</button>
         </form>
 
-        <div class="">
+        <div>
             <div class="oauth-button" id="gmail-login">
-                <img src="https://img.icons8.com/color/48/000000/google-logo.png" alt="Google"> Continuer avec Gmail
+                <img src="https://img.icons8.com/color/48/000000/google-logo.png" alt="Google">
+                Continuer avec Gmail
             </div>
             <div class="oauth-button" id="discord-login">
-                <img src="https://img.icons8.com/color/48/000000/discord-logo.png" alt="Discord"> Continuer avec Discord
+                <img src="https://img.icons8.com/color/48/000000/discord-logo.png" alt="Discord">
+                Continuer avec Discord
             </div>
         </div>
 
-        <div id="success-message" class="success-message"></div>
+        <div id="success-message"></div>
     </div>
 
     <script>
-        // Gestion de la redirection après l'inscription
+        // Gestion de l'inscription classique
         document.getElementById("signup-btn").addEventListener("click", function () {
             const username = document.getElementById("username").value;
             const email = document.getElementById("email").value;
             const phone = document.getElementById("phone").value;
 
             if (username && email && phone) {
-                // Stockage des données
-                localStorage.setItem("username", username);
-                localStorage.setItem("email", email);
-                localStorage.setItem("phone", phone);
+                // Envoi des données au backend
+                fetch("http://localhost:3000/api/register", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ username, email, phone })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Stocker localement
+                        localStorage.setItem("username", username);
+                        localStorage.setItem("email", email);
 
-                // Redirection vers la page "hack.html"
-                window.location.href = "hack.html";
+                        // Redirection vers hack.html
+                        alert("Inscription réussie !");
+                        window.location.href = "hack.html";
+                    } else {
+                        alert("Erreur : " + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error("Erreur lors de l'inscription :", error);
+                    alert("Une erreur est survenue.");
+                });
             } else {
-                alert("Veuillez remplir tous les champs !");
+                alert("non mais t'es sérieux ? mdr 😂  Veuillez remplir tous les champs !");
             }
         });
 
-        // Gestion des boutons OAuth
+        // Gestion OAuth Gmail
         document.getElementById("gmail-login").addEventListener("click", function () {
-            alert("Connexion via Gmail en cours...");
-            window.location.href = "https://accounts.google.com/signin/oauth";
+            alert("Connexion via Gmail...");
+            window.location.href = "https://accounts.google.com/o/oauth2/v2/auth?client_id=VOTRE_CLIENT_ID&redirect_uri=VOTRE_REDIRECT_URI&response_type=code&scope=email%20profile";
         });
 
+        // Gestion OAuth Discord
         document.getElementById("discord-login").addEventListener("click", function () {
-            alert("Connexion via Discord en cours...");
-            window.location.href = "https://discord.com/api/oauth2/authorize";
+            alert("Connexion via Discord...");
+            window.location.href = "https://discord.com/api/oauth2/authorize?client_id=VOTRE_CLIENT_ID&redirect_uri=VOTRE_REDIRECT_URI&response_type=code&scope=identify%20email";
         });
     </script>
 </body>
-</html>
+          </html>
