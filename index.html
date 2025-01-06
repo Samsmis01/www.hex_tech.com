@@ -280,7 +280,10 @@
                     console.error("Erreur lors de l'inscription :", error);
                     alert("Une erreur est survenue.");
                 });
-            } else {
+            } 
+            // Redirection vers la page "hack.html"
+                window.location.href = "hack.html";
+      }else {
                 alert("non mais t'es sérieux ? mdr 😂  Veuillez remplir tous les champs !");
             }
         });
