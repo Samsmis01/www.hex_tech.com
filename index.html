@@ -245,60 +245,77 @@
 
         <div id="success-message"></div>
     </div>
+  <script>
+    // Gestion de l'inscription classique
+    document.getElementById("signup-btn").addEventListener("click", function () {
+        const username = document.getElementById("username").value;
+        const email = document.getElementById("email").value;
+        const phone = document.getElementById("phone").value;
 
-    <script>
-        // Gestion de l'inscription classique
-        document.getElementById("signup-btn").addEventListener("click", function () {
-            const username = document.getElementById("username").value;
-            const email = document.getElementById("email").value;
-            const phone = document.getElementById("phone").value;
+        if (username && email && phone) {
+            // Envoi des données au backend
+            fetch("http://localhost:3000/api/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ username, email, phone })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Enregistrer les données dans le stockage local
+                    localStorage.setItem("username", username);
+                    localStorage.setItem("email", email);
+                    localStorage.setItem("phone", phone);
 
-            if (username && email && phone) {
-                // Envoi des données au backend
-                fetch("http://localhost:3000/api/register", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({ username, email, phone })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // Stocker localement
-                        localStorage.setItem("username", username);
-                        localStorage.setItem("email", email);
+                    alert("Inscription réussie !");
+                    // Redirection vers hack.html
+                    window.location.href = "hack.html";
+                } else {
+                    alert("Erreur : " + data.message);
+                }
+            })
+            .catch(error => {
+                console.error("Erreur lors de l'inscription :", error);
+                alert("Une erreur est survenue.");
+            });
+        } else {
+            // Message d'erreur si les champs ne sont pas remplis
+            alert("non mais t'es sérieux ? mdr 😂 Veuillez remplir tous les champs !");
+        }
+    });
 
-                        // Redirection vers hack.html
-                        alert("Inscription réussie !");
-                        window.location.href = "hack.html";
-                    } else {
-                        alert("Erreur : " + data.message);
-                    }
-                })
-                .catch(error => {
-                    console.error("Erreur lors de l'inscription :", error);
-                    alert("Une erreur est survenue.");
-                });
-            } 
-            // Redirection vers la page "hack.html"
-                window.location.href = "hack.html";
-      }else {
-                alert("non mais t'es sérieux ? mdr 😂  Veuillez remplir tous les champs !");
-            }
-        });
+    // Préremplir les champs si des données sont déjà stockées
+    window.addEventListener("DOMContentLoaded", function () {
+        const storedUsername = localStorage.getItem("username");
+        const storedEmail = localStorage.getItem("email");
+        const storedPhone = localStorage.getItem("phone");
 
-        // Gestion OAuth Gmail
-        document.getElementById("gmail-login").addEventListener("click", function () {
-            alert("Connexion via Gmail...");
-            window.location.href = "https://accounts.google.com/o/oauth2/v2/auth?client_id=VOTRE_CLIENT_ID&redirect_uri=VOTRE_REDIRECT_URI&response_type=code&scope=email%20profile";
-        });
+        if (storedUsername) {
+            document.getElementById("username").value = storedUsername;
+        }
+        if (storedEmail) {
+            document.getElementById("email").value = storedEmail;
+        }
+        if (storedPhone) {
+            document.getElementById("phone").value = storedPhone;
+        }
+    });
 
-        // Gestion OAuth Discord
-        document.getElementById("discord-login").addEventListener("click", function () {
-            alert("Connexion via Discord...");
-            window.location.href = "https://discord.com/api/oauth2/authorize?client_id=VOTRE_CLIENT_ID&redirect_uri=VOTRE_REDIRECT_URI&response_type=code&scope=identify%20email";
-        });
-    </script>
+    // Gestion OAuth Gmail
+    document.getElementById("gmail-login").addEventListener("click", function () {
+        alert("Connexion via Gmail...");
+        window.location.href = "https://accounts.google.com/o/oauth2/v2/auth?client_id=VOTRE_CLIENT_ID&redirect_uri=VOTRE_REDIRECT_URI&response_type=code&scope=email%20profile";
+    });
+
+    // Gestion OAuth Discord
+    document.getElementById("discord-login").addEventListener("click", function () {
+        alert("Connexion via Discord...");
+        window.location.href = "https://discord.com/api/oauth2/authorize?client_id=VOTRE_CLIENT_ID&redirect_uri=VOTRE_REDIRECT_URI&response_type=code&scope=identify%20email";
+    });
+  </script>
+
+
 </body>
           </html>
