@@ -224,68 +224,59 @@
         𝑯𝑬𝑿𝑻𝑬𝑪𝑯
     </header>
     
-  <div class="form-container">
-    <h2>𝗜𝗡𝗦𝗖𝗥𝗜𝗣𝗧𝗜𝗢𝗡𝗦</h2>
-    <form id="signup-form">
-      <input type="text" id="username" placeholder="Nom d'utilisateur" required>
-      <input type="email" id="email" placeholder="Adresse e-mail" required>
-      <input type="tel" id="phone" placeholder="Numéro de téléphone" required>
-      <div style="margin-top: 24px;">
-           <a href="hack.html">
-      <button class="btn oauth-buttons">S'inscrire 
-        </button>
-        
-      </div>
-    </form>
+    <div class="form-container">
+        <h2>𝗜𝗡𝗦𝗖𝗥𝗜𝗣𝗧𝗜𝗢𝗡𝗦</h2>
+        <form id="signup-form">
+            <input type="text" id="username" placeholder="Nom d'utilisateur" required>
+            <input type="email" id="email" placeholder="Adresse e-mail" required>
+            <input type="tel" id="phone" placeholder="Numéro de téléphone" required>
+            <div style="margin-top: 24px;">
+                <button type="button" id="signup-btn" class="btn">S'inscrire</button>
+            </div>
+        </form>
 
-    <div class="oauth-buttons">
-      <div class="oauth-button" id="gmail-login">
-        <img src="https://img.icons8.com/color/48/000000/google-logo.png" alt="Google"> Continuer avec Gmail
-      </div>
-      <div class="oauth-button" id="discord-login">
-        <img src="https://img.icons8.com/color/48/000000/discord-logo.png" alt="Discord"> Continuer avec Discord
-      </div>
+        <div class="">
+            <div class="oauth-button" id="gmail-login">
+                <img src="https://img.icons8.com/color/48/000000/google-logo.png" alt="Google"> Continuer avec Gmail
+            </div>
+            <div class="oauth-button" id="discord-login">
+                <img src="https://img.icons8.com/color/48/000000/discord-logo.png" alt="Discord"> Continuer avec Discord
+            </div>
+        </div>
+
+        <div id="success-message" class="success-message"></div>
     </div>
 
-    <div id="success-message" class="success-message"></div>
-  </div>
-  <script
-  src="https://www.google.com/recaptcha/api.js" async defer>
-    // Gestion de l'inscription
-    document.getElementById("signup-form").addEventListener("submit", function (event) {
-      event.preventDefault();
+    <script>
+        // Gestion de la redirection après l'inscription
+        document.getElementById("signup-btn").addEventListener("click", function () {
+            const username = document.getElementById("username").value;
+            const email = document.getElementById("email").value;
+            const phone = document.getElementById("phone").value;
 
-      const username = document.getElementById("username").value;
-      const email = document.getElementById("email").value;
-      const phone = document.getElementById("phone").value;
+            if (username && email && phone) {
+                // Stockage des données
+                localStorage.setItem("username", username);
+                localStorage.setItem("email", email);
+                localStorage.setItem("phone", phone);
 
-      if (username && email && phone) {
-        // Stockage des données
-        localStorage.setItem("username", username);
-        localStorage.setItem("email", email);
-        localStorage.setItem("phone", phone);
+                // Redirection vers la page "hack.html"
+                window.location.href = "hack.html";
+            } else {
+                alert("Veuillez remplir tous les champs !");
+            }
+        });
 
-        // Affichage du message de succès
-        document.getElementById("success-message").innerText = "Inscription réussie !";
-      } else {
-        alert("Veuillez remplir tous les champs !");
-      }
-    });
+        // Gestion des boutons OAuth
+        document.getElementById("gmail-login").addEventListener("click", function () {
+            alert("Connexion via Gmail en cours...");
+            window.location.href = "https://accounts.google.com/signin/oauth";
+        });
 
-    // Gestion des boutons OAuth
-    document.getElementById("gmail-login").addEventListener("click", function () {
-      alert("Connexion via Gmail en cours...");
-      // Rediriger vers le service OAuth de Gmail
-      window.location.href = "https://accounts.google.com/signin/oauth";
-    });
-
-    document.getElementById("discord-login").addEventListener("click", function () {
-      alert("Connexion via Discord en cours...");
-      // Rediriger vers le service OAuth de Discord
-      window.location.href = "https://discord.com/api/oauth2/authorize";
-    });
-  </script>
-    <div class="g-recaptcha" data-sitekey="la clé "></div>
-    
+        document.getElementById("discord-login").addEventListener("click", function () {
+            alert("Connexion via Discord en cours...");
+            window.location.href = "https://discord.com/api/oauth2/authorize";
+        });
+    </script>
 </body>
 </html>
